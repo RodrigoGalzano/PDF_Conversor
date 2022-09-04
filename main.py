@@ -6,12 +6,77 @@ from qt_core import *
 
 from gui.windows.main_window.ui_main_window import UI_MainWindow
 
+from ui_splash_screen import Ui_SplashScreen
+from gui.widgets import CircularProgress
+
+# GOLBALS
+counter = 0
+
+class SplashScreen(QMainWindow):
+    def __init__(self):
+        QMainWindow.__init__(self)
+        self.ui = Ui_SplashScreen()
+        self.ui.setupUi(self)
+        self.ui.title.setText('PDF Conversor')
+        self.ui.version.setText('v1.0.0')
+
+        # Remove Title Bar
+        self.setWindowFlag(Qt.FramelessWindowHint)
+        self.setAttribute(Qt.WA_TranslucentBackground)
+
+        # Import Circular Progress
+        self.progress = CircularProgress()
+        self.progress.width = 270
+        self.progress.height = 270
+        self.progress.value = 0
+        self.progress.progress_color = "#4674d9"
+        self.progress.text_color = "#4674d9"
+        self.progress.setFixedSize(self.progress.width, self.progress.height)
+        self.progress.move(15, 15)
+        self.progress.font_size = 40
+        self.progress.add_shadow(True)
+        self.progress.bg_color = QColor(68, 71, 90, 140)
+        self.progress.setParent(self.ui.centralwidget)
+        self.progress.show()
+
+
+        self.shadow = QGraphicsDropShadowEffect(self)
+        self.shadow.setBlurRadius(15)
+        self.shadow.setXOffset(0)
+        self.shadow.setYOffset(0)
+        self.shadow.setColor(QColor(0, 0, 0, 80))
+        self.setGraphicsEffect(self.shadow)
+
+        self.timer = QTimer()
+        self.timer.timeout.connect(self.update)
+        self.timer.start(25)
+
+        self.show()
+
+    def update(self):
+        global counter
+
+        # SET VALUE TO PROGRESS BAR
+        self.progress.set_value(counter)
+
+        if counter >= 100:
+            self.timer.stop()
+
+            self.main = MainWindow()
+            self.main.show()
+
+            self.close()
+
+        # Increase Counter
+        counter += 1
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle('Curso de Python e Pyside6')
+        self.setWindowFlag(Qt.FramelessWindowHint)
 
         self.ui = UI_MainWindow()
         self.ui.setup_ui(self)
@@ -25,7 +90,14 @@ class MainWindow(QMainWindow):
         self.ui.ui_pages.btnCarregarCaminhoSalvarPDF.clicked.connect(self.btnCarregarCaminhoSalvarPDFClick)
         self.ui.ui_pages.btnSalvarPDF.clicked.connect(self.btnSalvarPDFClick)
         self.ui.ui_pages.pshAplicarConfiguracoes.clicked.connect(self.pshAplicarConfiguracoesClick)
+        self.ui.btnFechar.clicked.connect(self.btnFecharClick)
+        self.ui.btnMinimizar.clicked.connect(self.btnMinimizarClick)
+        self.ui.btnMaximizar.clicked.connect(self.btnMaximizarClick)
         self.pshAplicarConfiguracoesClick()
+
+        # Exemplo para transformar um componente em QSizeGrip em tempo de execução
+        # QSizeGrip(self.ui.size_button)
+
         self.show()
 
     def change_text(self):
@@ -78,11 +150,41 @@ class MainWindow(QMainWindow):
     def btn_2Click(self):
         self.show_page_2()
 
+    def btnFecharClick(self):
+        self.close()
+
+    def btnMinimizarClick(self):
+        self.showMinimized()
+
+    def btnMaximizarClick(self):
+        global _old_size
+
+        # CHECK EVENT
+        if self.isMaximized():
+            self.ui.changeUI(False)
+            self.showNormal()
+        else:
+            _old_size = QSize(self.width(), self.height())
+            self.ui.changeUI(True)
+            self.showMaximized()
+
     def pshAplicarConfiguracoesClick(self):
         if self.ui.ui_pages.comboBoxTema.currentText() == "Black":
             self.ui.change_theme(cor_left_menu="#202020", cor_fundo_botoes_pages="#303030", cor_hover_botoes_pages="#454545" , cor_fundo_pages="#181818", cor_pressed_botoes_pages="#ffffff", cor_font_pressed_botoes_pages="#000000", cor_top_bottom_bar="#111111", cor_fundo_edit="#121212", cor_hover_btn_left_menu="#464646")
         elif self.ui.ui_pages.comboBoxTema.currentText() == "Purple":
             self.ui.change_theme(cor_left_menu="#44475a", cor_fundo_botoes_pages="rgb(67, 133, 200)", cor_hover_botoes_pages="rgb(85, 170, 255)", cor_fundo_pages="#282a36", cor_pressed_botoes_pages="rgb(255, 0, 127)", cor_font_pressed_botoes_pages="#ffffff", cor_top_bottom_bar="#21232d", cor_fundo_edit="rgb(68, 71, 90)", cor_hover_btn_left_menu="#4f5368")
+
+
+    def mousePressEvent(self, event):
+        self.dragPos = event.globalPosition().toPoint()
+
+
+    def mouseMoveEvent(self, event):
+        #if not self.ui.size_grip.underMouse():
+        if self.ui.window_top_frame_tela.underMouse():
+            self.move(self.pos() + event.globalPosition().toPoint() - self.dragPos)
+            self.dragPos = event.globalPosition().toPoint()
+            event.accept()
 
     def toggle_button(self):
         # Get menu width
@@ -104,5 +206,5 @@ class MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = SplashScreen()
     sys.exit(app.exec())

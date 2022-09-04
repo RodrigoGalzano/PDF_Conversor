@@ -31,6 +31,13 @@ def abreJanela(telaNova: UI_MainWindow, texto):
     telaNova.janela.setWindowFlag(Qt.FramelessWindowHint)
 
     telaNova.janela.exec_()
+    print('teste')
+
+def caminhoImage(nome_imagem):
+    app_path = os.path.abspath(os.getcwd())
+    folder = "gui/images/icons"
+    path = os.path.join(app_path, folder)
+    return os.path.normpath(os.path.join(path, nome_imagem))
 
 class converter_PDF:
     def __init__(self,

@@ -4,11 +4,11 @@ from PySide6.QtGui import QPainter
 
 from qt_core import *
 
-class PyPushButton(QPushButton):
+class WinPushButton(QPushButton):
     def __init__(self,
                  text = "",
                  height = 40,
-                 minimim_width = 50,
+                 width = 45,
                  text_padding = 55,
                  text_color = "#c3ccdf",
                  icon_path = "",
@@ -17,7 +17,6 @@ class PyPushButton(QPushButton):
                  btn_hover = "#4f5368",
                  btn_pressed = "#282a36",
                  is_active = False,
-                 hand_cursor = True,
                  ):
         super().__init__()
 
@@ -26,14 +25,14 @@ class PyPushButton(QPushButton):
         self.setMaximumHeight(height)
         self.setMinimumHeight(height)
 
-        if hand_cursor:
-            self.setCursor(Qt.PointingHandCursor)
+        self.setMaximumWidth(width)
+        self.setMinimumWidth(width)
 
         # Custom parameters
-        self.minimum_width = minimim_width
         self.text_padding = text_padding
         self.text_color = text_color
         self.icon_path = icon_path
+        self.icon_color = icon_color
         self.icon_color = icon_color
         self.btn_color = btn_color
         self.btn_hover = btn_hover
@@ -64,35 +63,30 @@ class PyPushButton(QPushButton):
                   btn_color="#44475a",
                   btn_hover = "#4f5368",
                   btn_pressed = "#282a36",
+                  btn_icon_pressed = "#282a36",
                   is_active = False
                   ):
         style = f"""
         QPushButton {{
             color: {text_color};
             background-color: {btn_color};
-            padding-left: {text_padding}px;
-            text-align: left;
             border: nome;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100px;
+            height: 100px; 
         }}
         QPushButton:hover {{
             background-color: {btn_hover};   
         }}
         QPushButton:pressed {{
             background-color: {btn_pressed};   
+            color: {btn_icon_pressed};   
         }}
         """
 
-        active_style = f"""
-        QPushButton {{
-            background-color: {btn_hover};
-            border-right: 5px solid {btn_pressed}; 
-        }}
-        """
-
-        if not is_active:
-            self.setStyleSheet(style)
-        else:
-            self.setStyleSheet(style + active_style)
+        self.setStyleSheet(style)
 
     def paintEvent(self, event):
         # Return default style
@@ -104,7 +98,7 @@ class PyPushButton(QPushButton):
         qp.setRenderHint(QPainter.Antialiasing)
         qp.setPen(Qt.NoPen)
 
-        rect = QRect(0, 0, self.minimum_width, self.height())
+        rect = QRect(0, 0, self.width(), self.height())
 
         self.draw_icon(qp, self.icon_path, rect, self.icon_color)
 

@@ -1,8 +1,10 @@
 from qt_core import *
+import os
 
 from gui.pages.ui_pages import Ui_application_pages
 
 from gui.widgets.py_push_button import PyPushButton
+from gui.widgets.button_win_menu import WinPushButton
 from gui.dialogs.ui_dialog import Ui_Dialog
 
 
@@ -19,9 +21,47 @@ class UI_MainWindow(object):
         parent.resize(1200, 720)
         parent.setMinimumSize(960, 540)
 
+        # Frame Principal todos os outros estão dentro dele
+        self.window_top_frame = QFrame()
+
+        # LAYOUT Principal horizontal um frame a barra com o botão de fechar e o outro são os frame da aplicação
+        self.window_top_layout = QVBoxLayout(self.window_top_frame)
+        self.window_top_layout.setContentsMargins(0, 0, 0, 0)
+        self.window_top_layout.setSpacing(0)
+
+        # Frame barra com o botão de fechar
+        self.window_top_frame_tela = QFrame()
+        self.window_top_frame_tela.setStyleSheet('background-color: ' + self.cor_content)
+        self.window_top_frame_tela.setMinimumHeight(25)
+        self.window_top_frame_tela.setMaximumHeight(25)
+
+        # Layout barra com o botão de fechar
+        self.window_menu_layout_tela = QHBoxLayout(self.window_top_frame_tela)
+        self.window_menu_layout_tela.setContentsMargins(0, 0, 0, 0)
+        self.window_menu_layout_tela.setSpacing(0)
+
+        self.btnMinimizar = WinPushButton(icon_path="icon_minimize.svg", height=self.window_top_frame_tela.height(), btn_color=self.cor_content)
+
+        self.btnMaximizar = WinPushButton(icon_path="icon_maximize.svg", height=self.window_top_frame_tela.height(), btn_color=self.cor_content)
+
+        self.btnFechar = WinPushButton(icon_path="icon_close.svg", height=self.window_top_frame_tela.height(), btn_color=self.cor_content)
+
+        self.estilo_win_psh_button_inicial = self.btnFechar.styleSheet()
+
+        self.windows_menu_spacer = QSpacerItem(50, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.window_menu_layout_tela.addItem(self.windows_menu_spacer)
+        self.window_menu_layout_tela.addWidget(self.btnMinimizar, 0, Qt.AlignRight | Qt.AlignTop)
+        self.window_menu_layout_tela.addWidget(self.btnMaximizar, 0, Qt.AlignRight | Qt.AlignTop)
+        self.window_menu_layout_tela.addWidget(self.btnFechar, 0, Qt.AlignRight | Qt.AlignTop)
+
         # CREATE CENTRAL WIDGET
         # /////////////////////////////////////////////////////////////////
         self.central_frame = QFrame()
+
+        # ADD frame do botão fechar e frame da aplicação
+        self.window_top_layout.addWidget(self.window_top_frame_tela)
+        self.window_top_layout.addWidget(self.central_frame)
 
         # CREATE MAIN LAYOUT
         self.main_layout = QHBoxLayout(self.central_frame)
@@ -111,6 +151,14 @@ class UI_MainWindow(object):
         self.top_bar_layout = QHBoxLayout(self.top_bar)
         self.top_bar_layout.setContentsMargins(10, 0, 10, 0)
 
+        # TOP BAR 2
+        self.top_bar2 = QFrame()
+        self.top_bar2.setMinimumHeight(30)
+        self.top_bar2.setMaximumHeight(30)
+        self.top_bar2.setStyleSheet("background-color: red")
+        self.top_bar_layout2 = QHBoxLayout(self.top_bar2)
+        self.top_bar_layout2.setContentsMargins(10, 0, 10, 0)
+
         # LEFT LABEL
         self.top_label_left = QLabel("Essa é minha primeira aplicação com PySide6")
 
@@ -152,12 +200,19 @@ class UI_MainWindow(object):
         self.bottom_spacer = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         # RIGHT LABEL
-        self.bottom_label_right = QLabel("@ 2022")
+        # self.bottom_label_right = QLabel("@ 2022")
+
+        app_path = os.path.abspath(os.getcwd())
+        folder = "gui/images/icons"
+        path = os.path.join(app_path, folder)
+        path = os.path.normpath(os.path.join(path, 'ressize.svg'))
+
+        self.size_grip = QSizeGrip(self.bottom_bar)
 
         # ADD TO LAYOUT
         self.bottom_bar_layout.addWidget(self.bottom_label_left)
         self.bottom_bar_layout.addItem(self.bottom_spacer)
-        self.bottom_bar_layout.addWidget(self.bottom_label_right)
+        self.bottom_bar_layout.addWidget(self.size_grip)
 
         # ADD TO C0NTENT LAYOUT
         self.content_layout.addWidget(self.top_bar)
@@ -169,12 +224,19 @@ class UI_MainWindow(object):
         self.main_layout.addWidget(self.content)
 
         # SET CENTRAL WIDGET
-        parent.setCentralWidget(self.central_frame)
+        parent.setCentralWidget(self.window_top_frame)
 
         #GET styleSheet Botoes
         self.estilo_botoes_incial = self.ui_pages.btnSalvarPDF.styleSheet()
         self.estilo_combo_incial = self.ui_pages.comboBoxTema.styleSheet()
         self.estilo_edit_inicial = self.ui_pages.edtCaminhoPDF.styleSheet()
+
+    def changeUI(self, bMaximizado):
+        if bMaximizado:
+            self.btnMaximizar.icon_path = "icon_restore.svg"
+        else:
+            self.btnMaximizar.icon_path = "icon_maximize.svg"
+
 
 
     def change_theme(self, cor_left_menu, cor_fundo_botoes_pages, cor_hover_botoes_pages, cor_fundo_pages, cor_pressed_botoes_pages , cor_font_pressed_botoes_pages, cor_top_bottom_bar, cor_fundo_edit, cor_hover_btn_left_menu):
@@ -182,6 +244,7 @@ class UI_MainWindow(object):
         self.cor_left_menu = cor_left_menu
         self.content.setStyleSheet("background-color: " + cor_fundo_pages)
         self.cor_content = cor_fundo_pages
+        self.window_top_frame_tela.setStyleSheet('background-color: ' + cor_top_bottom_bar)
         self.top_bar.setStyleSheet("background-color: " + cor_top_bottom_bar + "; color: #6277a4")
         self.bottom_bar.setStyleSheet("background-color: " + cor_top_bottom_bar + "; color: #6277a4")
 
@@ -234,6 +297,21 @@ class UI_MainWindow(object):
         for btn in self.pages.findChildren(QLineEdit):
             try:
                 btn.setStyleSheet(self.estilo_edit_inicial + style_edit_novo)
+            except:
+                pass
+
+        style_win_psh_novo = f"""
+        QPushButton {{
+            background-color: {cor_top_bottom_bar};
+        }}
+        """
+
+        for btn in self.window_top_frame.findChildren(WinPushButton):
+            try:
+                btn.btn_color = cor_left_menu
+                btn.btn_hover = cor_hover_btn_left_menu
+                btn.btn_pressed = cor_fundo_pages
+                btn.set_style(btn_color=cor_top_bottom_bar, btn_hover=cor_hover_btn_left_menu, btn_pressed=cor_pressed_botoes_pages, btn_icon_pressed=cor_pressed_botoes_pages)
             except:
                 pass
 
