@@ -7,7 +7,7 @@ from qt_core import *
 from gui.windows.main_window.ui_main_window import UI_MainWindow
 
 from ui_splash_screen import Ui_SplashScreen
-from gui.widgets import CircularProgress
+from gui.widgets.circular_progress import CircularProgress
 
 # GOLBALS
 counter = 0
@@ -85,6 +85,7 @@ class MainWindow(QMainWindow):
         self.ui.toggle_button.clicked.connect(self.toggle_button) #Esse parâmetro "self.toggle_button" é a função logo a baixo e não o botão
         self.ui.btn_1.clicked.connect(self.show_page_1)
         self.ui.btn_2.clicked.connect(self.btn_2Click)
+        self.ui.btn_circular_progress_bar.clicked.connect(self.btn_circular_progress_bar_click)
         self.ui.settings_btn.clicked.connect(self.show_page_3)
         self.ui.ui_pages.btnCarregarPDF.clicked.connect(self.btnCarregarPDFClick)
         self.ui.ui_pages.btnCarregarCaminhoSalvarPDF.clicked.connect(self.btnCarregarCaminhoSalvarPDFClick)
@@ -93,12 +94,32 @@ class MainWindow(QMainWindow):
         self.ui.btnFechar.clicked.connect(self.btnFecharClick)
         self.ui.btnMinimizar.clicked.connect(self.btnMinimizarClick)
         self.ui.btnMaximizar.clicked.connect(self.btnMaximizarClick)
+        self.ui.ui_pages.horizontalSlider.valueChanged.connect(self.on_change_horizontalSlider)
+        self.ui.ui_pages.comboBox.currentTextChanged.connect(self.on_combobox_changed)
+        self.ui.slider_exemplo1.valueChanged.connect(self.slider_exemplo1_change_value)
+        self.ui.slider_exemplo2.valueChanged.connect(self.slider_exemplo2_change_value)
+        self.ui.slider_exemplo3.valueChanged.connect(self.slider_exemplo3_change_value)
         self.pshAplicarConfiguracoesClick()
 
         # Exemplo para transformar um componente em QSizeGrip em tempo de execução
         # QSizeGrip(self.ui.size_button)
 
         self.show()
+
+    def slider_exemplo1_change_value(self, value):
+        self.ui.progress_exemplo1.set_value(value)
+
+    def slider_exemplo2_change_value(self, value):
+        self.ui.progress_exemplo2.set_value(value)
+
+    def slider_exemplo3_change_value(self, value):
+        self.ui.progress_exemplo3.set_value(value)
+
+    def on_combobox_changed(self, value):
+        self.ui.toggle_exemplo.set_value(self.ui.ui_pages.horizontalSlider.value(), self.ui.ui_pages.comboBox.itemData(self.ui.ui_pages.comboBox.currentIndex()))
+
+    def on_change_horizontalSlider(self, value):
+        self.ui.toggle_exemplo.set_value(value, self.ui.ui_pages.comboBox.itemData(self.ui.ui_pages.comboBox.currentIndex()))
 
     def change_text(self):
         text = self.ui.ui_pages.lineEdit.text()
@@ -119,7 +140,9 @@ class MainWindow(QMainWindow):
 
     def btnSalvarPDFClick(self):
         converte_pdf = img.converter_PDF(self.ui.ui_pages.edtCaminhoPDF.text(), self.ui.ui_pages.edtCaminhoSalvarPDF.text(), self.ui)
-        converte_pdf.converter_pdf_imagem('PNG', 200)
+        if converte_pdf.converter_pdf_imagem('PNG', 200):
+            self.ui.ui_pages.lbl_msg_conversao.setStyleSheet("color: #4674d9; padding: 2px;")
+            self.ui.ui_pages.lbl_msg_conversao.setText("Conversão realizada com sucesso.")
 
     def btnCarregarCaminhoSalvarPDFClick(self):
         fname = self.openDirectoryBrowser()
@@ -141,6 +164,14 @@ class MainWindow(QMainWindow):
         self.reset_selection()
         self.ui.pages.setCurrentWidget(self.ui.ui_pages.page_2)
         self.ui.btn_2.set_active(True)
+
+    def show_page_circular_progress_bar(self):
+        self.reset_selection()
+        self.ui.pages.setCurrentWidget(self.ui.ui_pages.page_circular_progress_bar)
+        self.ui.btn_circular_progress_bar.set_active(True)
+
+    def btn_circular_progress_bar_click(self):
+        self.show_page_circular_progress_bar()
 
     def show_page_3(self):
         self.reset_selection()
@@ -206,5 +237,5 @@ class MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = SplashScreen()
+    window = MainWindow()
     sys.exit(app.exec())

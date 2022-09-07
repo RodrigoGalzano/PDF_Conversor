@@ -50,19 +50,25 @@ class converter_PDF:
         self.telaParent = telaParent
 
     def valida(self, tela):
+        self.telaParent.ui_pages.lbl_msg_conversao.setStyleSheet("color: #F7122D; padding: 2px;")
+
         if self.caminhopdf == '':
-            abreJanela(tela,'Arquivo não informado.')
+            # abreJanela(tela,'Arquivo não informado.')
+            self.telaParent.ui_pages.lbl_msg_conversao.setText("Arquivo não informado.")
             print('Arquivo não informado.')
             return False
         elif self.caminhosave == '':
+            self.telaParent.ui_pages.lbl_msg_conversao.setText("Caimho para salvar não informado.")
             print('Caimho para salvar não informado.')
             return False
         else:
             if not os.path.isfile(self.caminhopdf):
+                self.telaParent.ui_pages.lbl_msg_conversao.setText("Arquivo não encontrado.")
                 print('Arquivo não encontrado.')
                 return False
 
             if not os.path.isdir(self.caminhosave):
+                self.telaParent.ui_pages.lbl_msg_conversao.setText("Não é um caminho válido.")
                 print('Não é um caminho válido.')
                 return False
 
@@ -77,3 +83,5 @@ class converter_PDF:
             for imgs in img:
                 imgs.save(self.caminhosave + '/' + Path(self.caminhopdf).stem + '_' + str(i) + '.' + tipo, tipo)
                 i = i + 1
+
+            return True

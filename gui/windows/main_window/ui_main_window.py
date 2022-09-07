@@ -6,6 +6,8 @@ from gui.pages.ui_pages import Ui_application_pages
 from gui.widgets.py_push_button import PyPushButton
 from gui.widgets.button_win_menu import WinPushButton
 from gui.dialogs.ui_dialog import Ui_Dialog
+from gui.widgets.py_toggle import PyToggle
+from gui.widgets.circular_progress import CircularProgress
 
 
 class UI_MainWindow(object):
@@ -93,12 +95,14 @@ class UI_MainWindow(object):
         # TOP BTNS
         self.toggle_button = PyPushButton(text='Ocultar menu', icon_path="icon_menu.svg")
         self.btn_1 = PyPushButton(text='Página Inicial', is_active=True, icon_path="icon_home.svg")
-        self.btn_2 = PyPushButton(text='Página 2', icon_path="icon_widgets.svg")
+        self.btn_2 = PyPushButton(text='Toggle Button', icon_path="icon_widgets.svg")
+        self.btn_circular_progress_bar = PyPushButton(text='Circular Progress Bar', icon_path="circle.svg")
 
         # ADD BTNS TO LAYOUT
         self.left_menu_top_layout.addWidget(self.toggle_button)
         self.left_menu_top_layout.addWidget(self.btn_1)
         self.left_menu_top_layout.addWidget(self.btn_2)
+        self.left_menu_top_layout.addWidget(self.btn_circular_progress_bar)
 
         # MENU SPACER
         # /////////////////////////////////////////////////////////////////
@@ -160,13 +164,13 @@ class UI_MainWindow(object):
         self.top_bar_layout2.setContentsMargins(10, 0, 10, 0)
 
         # LEFT LABEL
-        self.top_label_left = QLabel("Essa é minha primeira aplicação com PySide6")
+        self.top_label_left = QLabel("Aplicação utilizando Python e PySide6")
 
         # TOP SPACER
         self.top_spacer = QSpacerItem(20, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         # RIGHT LABEL
-        self.top_label_right = QLabel("| PÁGINA INICIAL")
+        self.top_label_right = QLabel("| PDF Conversor")
         self.top_label_right.setStyleSheet("font: 700 9pt 'Sergoe UI'")
 
         # ADD TO LAYOUT
@@ -179,10 +183,93 @@ class UI_MainWindow(object):
         self.pages.setStyleSheet("font-size: 12pt; color: #f8f8f2")
         self.ui_pages = Ui_application_pages()
         self.ui_pages.setupUi(self.pages)
+        self.ui_pages.lbl_msg_conversao.setText("")
+
         self.ui_pages.comboBoxTema.addItem("Black", "", "")
         self.ui_pages.comboBoxTema.addItem("Purple", "", "")
         self.ui_pages.comboBoxTema.setCurrentIndex(0)
+
+        self.ui_pages.comboBox.addItem("OutBounce", QEasingCurve.OutBounce, "")
+        self.ui_pages.comboBox.addItem("InOutCirc", QEasingCurve.InOutCirc, "")
+        self.ui_pages.comboBox.addItem("InCurve", QEasingCurve.InCurve, "")
+        self.ui_pages.comboBox.addItem("OutCurve", QEasingCurve.OutCurve, "")
+        self.ui_pages.comboBox.setCurrentIndex(0)
+
         self.pages.setCurrentWidget(self.ui_pages.page_1)
+
+        self.toggle_abrir_pasta = PyToggle()
+        self.toggle_abrir_pasta.setText(self.ui_pages.checkBox.text())
+
+        # REPLACE WIDGET
+        self.ui_pages.gridLayout.replaceWidget(self.ui_pages.checkBox, self.toggle_abrir_pasta)
+
+        # DELETE WIDGET
+        self.ui_pages.gridLayout.removeWidget(self.ui_pages.checkBox)
+        self.ui_pages.checkBox.deleteLater()
+        self.ui_pages.checkBox = None
+
+        self.toggle_exemplo = PyToggle()
+
+        # REPLACE WIDGET
+        self.ui_pages.verticalLayout_page_2.replaceWidget(self.ui_pages.chk_exemplo, self.toggle_exemplo)
+
+        # DELETE WIDGET
+        self.ui_pages.verticalLayout_page_2.removeWidget(self.ui_pages.chk_exemplo)
+        self.ui_pages.chk_exemplo.deleteLater()
+        self.ui_pages.chk_exemplo = None
+
+        self.ui_pages.verticalLayout_page_2.addWidget(self.toggle_exemplo, Qt.AlignCenter, Qt.AlignCenter)
+
+        # ADD Circular Progress Bar Exemplo 1
+        self.progress_exemplo1 = CircularProgress()
+        self.progress_exemplo1.value = 50
+        self.progress_exemplo1.add_shadow(True)
+        self.progress_exemplo1.setMinimumSize(self.progress_exemplo1.width, self.progress_exemplo1.height)
+
+        self.ui_pages.grid_layout_layout_circular_progress_bar.addWidget(self.progress_exemplo1, 0, 0)
+
+        #ADD SLIDER Progress 1
+        self.slider_exemplo1 = QSlider(Qt.Horizontal)
+        self.slider_exemplo1.setRange(0, 100)
+
+        self.ui_pages.grid_layout_layout_circular_progress_bar.addWidget(self.slider_exemplo1, 1, 0)
+
+        # ADD Circular Progress Bar Exemplo 2
+        self.progress_exemplo2 = CircularProgress()
+        self.progress_exemplo2.value = 50
+        self.progress_exemplo2.font_size = 10
+        self.progress_exemplo2.progress_width = 20
+        self.progress_exemplo2.enable_bg = False
+        self.progress_exemplo2.text_color = "#4674d9"
+        self.progress_exemplo2.progress_color = "#4674d9"
+        self.progress_exemplo2.add_shadow(True)
+        self.progress_exemplo2.setMinimumSize(self.progress_exemplo2.width, self.progress_exemplo2.height)
+
+        self.ui_pages.grid_layout_layout_circular_progress_bar.addWidget(self.progress_exemplo2, 0, 1)
+
+        #ADD SLIDER Progress 2
+        self.slider_exemplo2 = QSlider(Qt.Horizontal)
+        self.slider_exemplo2.setRange(0, 100)
+
+        self.ui_pages.grid_layout_layout_circular_progress_bar.addWidget(self.slider_exemplo2, 1, 1)
+
+        # ADD Circular Progress Bar Exemplo 3
+        self.progress_exemplo3 = CircularProgress()
+        self.progress_exemplo3.value = 50
+        self.progress_exemplo3.progress_width = 5
+        self.progress_exemplo3.font_size = 18
+        self.progress_exemplo3.text_color = "#a49696"
+        self.progress_exemplo3.progress_color = "#a49696"
+        self.progress_exemplo3.add_shadow(True)
+        self.progress_exemplo3.setMinimumSize(self.progress_exemplo3.width, self.progress_exemplo3.height)
+
+        self.ui_pages.grid_layout_layout_circular_progress_bar.addWidget(self.progress_exemplo3, 0, 2) #Linha - Coluna
+
+        #ADD SLIDER Progress 3
+        self.slider_exemplo3 = QSlider(Qt.Horizontal)
+        self.slider_exemplo3.setRange(0, 100)
+
+        self.ui_pages.grid_layout_layout_circular_progress_bar.addWidget(self.slider_exemplo3, 1, 2)
 
         # TOP BAR
         self.bottom_bar = QFrame()
@@ -201,11 +288,6 @@ class UI_MainWindow(object):
 
         # RIGHT LABEL
         # self.bottom_label_right = QLabel("@ 2022")
-
-        app_path = os.path.abspath(os.getcwd())
-        folder = "gui/images/icons"
-        path = os.path.join(app_path, folder)
-        path = os.path.normpath(os.path.join(path, 'ressize.svg'))
 
         self.size_grip = QSizeGrip(self.bottom_bar)
 
@@ -230,6 +312,7 @@ class UI_MainWindow(object):
         self.estilo_botoes_incial = self.ui_pages.btnSalvarPDF.styleSheet()
         self.estilo_combo_incial = self.ui_pages.comboBoxTema.styleSheet()
         self.estilo_edit_inicial = self.ui_pages.edtCaminhoPDF.styleSheet()
+
 
     def changeUI(self, bMaximizado):
         if bMaximizado:
