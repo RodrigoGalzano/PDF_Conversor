@@ -14,7 +14,7 @@
    <string>StackedWidget</string>
   </property>
   <property name="currentIndex">
-   <number>3</number>
+   <number>1</number>
   </property>
   <widget class="QWidget" name="page_1">
    <property name="maximumSize">
@@ -401,7 +401,45 @@ color: rgb(255, 255, 255);</string>
 	border: 2px solid #c3ccdf;
 	color: rgb(255, 255, 255);
 	border-radius: 10px;
-}</string>
+}
+
+#comboBox::drop-down{
+	border: 0px;
+}
+
+#comboBox::down-arrow{
+   image: url(:/chevron-down.svg);
+   width: 12px;
+   height: 12px;
+   margin-right: 15px;
+}
+
+#comboBox:on{
+   border: 4px solid #c2dbf;
+}
+
+#comboBox QListView{
+   font-size: 12px;
+   border: 1px solid rgba(0,0,0, 10%);
+   padding: 5px;
+   background-color: #fff;
+   outline: 0px;
+}
+
+#comboBox QListView::item{
+   padding-left: 10px;
+   background-color: #fff;
+   color: #000000
+}
+
+#comboBox QListView::item:hover{
+   background-color: #1e90ff;
+}
+
+
+
+
+</string>
              </property>
             </widget>
            </item>
@@ -539,7 +577,48 @@ color: rgb(255, 255, 255);</string>
 	border: 2px solid #c3ccdf;
 	color: rgb(255, 255, 255);
 	border-radius: 10px;
-}</string>
+}
+
+#comboBoxTema::drop-down{
+	border: 0px;
+}
+
+#comboBoxTema::down-arrow{
+   image: url(:/chevron-down.svg);
+   width: 12px;
+   height: 12px;
+   margin-right: 15px;
+}
+
+#comboBoxTema:on{
+   border: 4px solid #c2dbf;
+}
+
+#comboBoxTema QListView{
+   font-size: 12px;
+   border: 1px solid rgba(0,0,0, 10%);
+   padding: 5px;
+   background-color: #fff;
+   outline: 0px;
+}
+
+#comboBoxTema QListView::item{
+   padding-left: 10px;
+   background-color: #fff;
+   color: #000000
+}
+
+#comboBoxTema QListView::item:hover{
+   background-color: #1e90ff;
+}
+
+
+
+
+
+
+
+</string>
            </property>
            <property name="currentText">
             <string/>
@@ -598,6 +677,8 @@ QPushButton:pressed{
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../../r1/r1.qrc"/>
+ </resources>
  <connections/>
 </ui>

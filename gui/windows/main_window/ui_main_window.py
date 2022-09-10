@@ -367,7 +367,7 @@ class UI_MainWindow(object):
 
         for btn in self.pages.findChildren(QComboBox):
             try:
-                btn.setStyleSheet(self.estilo_combo_incial + style_combo_novo)
+                btn.setStyleSheet(btn.styleSheet() + style_combo_novo)
             except:
                 pass
 

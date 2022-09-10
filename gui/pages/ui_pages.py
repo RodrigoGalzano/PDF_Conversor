@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'pagesmmZuTT.ui'
+## Form generated from reading UI file 'pagesaKYJEk.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.3.1
 ##
@@ -19,6 +19,7 @@ from PySide6.QtWidgets import (QApplication, QCheckBox, QComboBox, QFrame,
     QGridLayout, QHBoxLayout, QLabel, QLineEdit,
     QPushButton, QSizePolicy, QSlider, QStackedWidget,
     QVBoxLayout, QWidget)
+import r1_rc
 
 class Ui_application_pages(object):
     def setupUi(self, application_pages):
@@ -224,7 +225,45 @@ class Ui_application_pages(object):
 "	border: 2px solid #c3ccdf;\n"
 "	color: rgb(255, 255, 255);\n"
 "	border-radius: 10px;\n"
-"}")
+"}\n"
+"\n"
+"#comboBox::drop-down{\n"
+"	border: 0px;\n"
+"}\n"
+"\n"
+"#comboBox::down-arrow{\n"
+"   image: url(:/chevron-down.svg);\n"
+"   width: 12px;\n"
+"   height: 12px;\n"
+"   margin-right: 15px;\n"
+"}\n"
+"\n"
+"#comboBox:on{\n"
+"   border: 4px solid #c2dbf;\n"
+"}\n"
+"\n"
+"#comboBox QListView{\n"
+"   font-size: 12px;\n"
+"   border: 1px solid rgba(0,0,0, 10%);\n"
+"   padding: 5px;\n"
+"   background-color: #fff;\n"
+"   outline: 0px;\n"
+"}\n"
+"\n"
+"#comboBox QListView::item{\n"
+"   padding-left: 10px;\n"
+"   background-color: #fff;\n"
+"   color: #000000\n"
+"}\n"
+"\n"
+"#comboBox QListView::item:hover{\n"
+"   background-color: #1e90ff;\n"
+"}\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"")
 
         self.gridLayout_2.addWidget(self.comboBox, 1, 2, 1, 1)
 
@@ -304,7 +343,48 @@ class Ui_application_pages(object):
 "	border: 2px solid #c3ccdf;\n"
 "	color: rgb(255, 255, 255);\n"
 "	border-radius: 10px;\n"
-"}")
+"}\n"
+"\n"
+"#comboBoxTema::drop-down{\n"
+"	border: 0px;\n"
+"}\n"
+"\n"
+"#comboBoxTema::down-arrow{\n"
+"   image: url(:/chevron-down.svg);\n"
+"   width: 12px;\n"
+"   height: 12px;\n"
+"   margin-right: 15px;\n"
+"}\n"
+"\n"
+"#comboBoxTema:on{\n"
+"   border: 4px solid #c2dbf;\n"
+"}\n"
+"\n"
+"#comboBoxTema QListView{\n"
+"   font-size: 12px;\n"
+"   border: 1px solid rgba(0,0,0, 10%);\n"
+"   padding: 5px;\n"
+"   background-color: #fff;\n"
+"   outline: 0px;\n"
+"}\n"
+"\n"
+"#comboBoxTema QListView::item{\n"
+"   padding-left: 10px;\n"
+"   background-color: #fff;\n"
+"   color: #000000\n"
+"}\n"
+"\n"
+"#comboBoxTema QListView::item:hover{\n"
+"   background-color: #1e90ff;\n"
+"}\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"\n"
+"")
         self.comboBoxTema.setInsertPolicy(QComboBox.InsertAtBottom)
 
         self.verticalLayout_5.addWidget(self.comboBoxTema)
@@ -339,7 +419,7 @@ class Ui_application_pages(object):
 
         self.retranslateUi(application_pages)
 
-        application_pages.setCurrentIndex(3)
+        application_pages.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(application_pages)
