@@ -1,6 +1,7 @@
 import os
 import sys
 from pathlib import Path
+import subprocess
 
 from pdf2image import convert_from_path
 
@@ -74,7 +75,7 @@ class converter_PDF:
 
         return True
 
-    def converter_pdf_imagem(self, tipo, dpi=200,):
+    def converter_pdf_imagem(self, tipo, dpi=200, abre_pasta = False):
         if self.valida(self.telaParent):
             img = convert_from_path(self.caminhopdf, dpi=dpi,
                                     poppler_path=os.path.dirname(sys.executable) + '/poppler-0.68.0/bin')
@@ -83,5 +84,8 @@ class converter_PDF:
             for imgs in img:
                 imgs.save(self.caminhosave + '/' + Path(self.caminhopdf).stem + '_' + str(i) + '.' + tipo, tipo)
                 i = i + 1
+
+            if abre_pasta:
+                os.startfile(self.caminhosave)
 
             return True

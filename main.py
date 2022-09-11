@@ -127,7 +127,7 @@ class MainWindow(QMainWindow):
         self.ui.ui_pages.label_ola.setText(new_text)
 
     def openFileBrowser(self):
-        result = QFileDialog.getOpenFileName(self, 'Carregar arquivo', '', "PDF (*.PDF)")
+        result = QFileDialog.getOpenFileName(self, 'Carregar arquivo', 'D:/PDF_Teste', "PDF (*.PDF)")
         return result[0]
 
     def openDirectoryBrowser(self):
@@ -140,7 +140,7 @@ class MainWindow(QMainWindow):
 
     def btnSalvarPDFClick(self):
         converte_pdf = img.converter_PDF(self.ui.ui_pages.edtCaminhoPDF.text(), self.ui.ui_pages.edtCaminhoSalvarPDF.text(), self.ui)
-        if converte_pdf.converter_pdf_imagem('PNG', 200):
+        if converte_pdf.converter_pdf_imagem('PNG', 200, self.ui.toggle_abrir_pasta.isChecked()):
             self.ui.ui_pages.lbl_msg_conversao.setStyleSheet("color: #4674d9; padding: 2px;")
             self.ui.ui_pages.lbl_msg_conversao.setText("Conversão realizada com sucesso.")
 
@@ -237,5 +237,5 @@ class MainWindow(QMainWindow):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = SplashScreen()
     sys.exit(app.exec())
